@@ -1,0 +1,42 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 60px;
+}
+.tableWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.headerTable {
+  font-size: 22px;
+  text-align: left;
+}
+.tbody {
+  font-size: 18px;
+}
+.tdAbout {
+  display: -webkit-box;
+  max-width: 400px;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pagesContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pageBtn {
+  font-size: 18px;
+  cursor: pointer;
+  margin-right: 15px;
+  margin-top: 25px;
+}
+.tdFirstName {
+  width: 160px;
+  background-color: azure;
+}
