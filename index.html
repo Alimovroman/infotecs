@@ -12,10 +12,23 @@
       <div class="tableWrapper">
         <table class="table">
           <tr class="headerTable">
-            <th class="firstName">First Name</th>
-            <th class="lastName">Last Name</th>
-            <th class="about">About</th>
-            <th class="eyeColor">Eye Color</th>
+            <th>First Name 
+            <div><span class="firstName">&#9660</span>	<span class="visibleFirstName">&#10811</span></div></th>
+            <th>Last Name 
+              <div><span class="lastName">&#9660</span> <span class="visibleLastName">&#10811</span></div></th>
+            <th>About
+              <div><span class="about">&#9660</span> <span class="visibleAbot">&#10811</span></div> </th>
+            <th>
+              Eye Color
+              <div><span class="eyeColor">&#9660</span> <span class="visibleEyeColor">&#10811</span></div> 
+              <select class="eyeColorSelect">
+                <option value="all" class="eyeColorOption">all</option>
+                <option value="blue" class="eyeColorOption">blue</option>
+                <option value="green" class="eyeColorOption">green</option>
+                <option value="brown" class="eyeColorOption">brown</option>
+                <option value="red" class="eyeColorOption">red</option>
+              </select>
+            </th>
           </tr>
           <tbody class="tbody"></tbody>
         </table>
