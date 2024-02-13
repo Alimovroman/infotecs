@@ -1,243 +1,286 @@
-const tbody = document.body.getElementsByClassName("tbody");
-const pagesContainer = document.body.getElementsByClassName("pagesContainer");
-const firstName = document.body.getElementsByClassName("firstName");
-const lastName = document.body.getElementsByClassName("lastName");
-const about = document.body.getElementsByClassName("about");
-const eyeColor = document.body.getElementsByClassName("eyeColor");
-const tableWrapper = document.body.getElementsByClassName("tableWrapper");
-const eyeColorSelect = document.body.getElementsByClassName("eyeColorSelect");
-const visibleFirstName =
-  document.body.getElementsByClassName("visibleFirstName");
-
-let mainData = [...data];
-let totalPages = Math.floor(mainData.length / 10);
-let page = 1;
-let minCount = 0;
-let maxCount = 10;
-let dataOfPage = [];
-
-const dataOfPageFilter = () => {
-  dataOfPage = mainData.filter((e, i) => i >= minCount && i < maxCount);
+// import * as data from "./data.json";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
 };
-
-//отрисовываем список пользователей
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+var tbody = document.body.getElementsByClassName("tbody");
+var pagesContainer = document.body.getElementsByClassName("pagesContainer");
+var firstName = document.body.getElementsByClassName("firstName");
+var lastName = document.body.getElementsByClassName("lastName");
+var about = document.body.getElementsByClassName("about");
+var eyeColor = document.body.getElementsByClassName("eyeColor");
+var tableWrapper = document.body.getElementsByClassName("tableWrapper");
+var eyeColorSelect = document.body.getElementsByClassName("eyeColorSelect");
+var visibleFirstName = document.body.getElementsByClassName("visibleFirstName");
+var visibleLastName = document.body.getElementsByClassName("visibleLastName");
+var visibleAbout = document.body.getElementsByClassName("visibleAbout");
+var visibleEyeColor = document.body.getElementsByClassName("visibleEyeColor");
+var data = require("./data.json");
+var mainData = __spreadArray([], data, true);
+var totalPages = Math.floor(mainData.length / 10);
+var page = 1;
+var minCount = 0;
+var maxCount = 10;
+var dataOfPage = [];
+var isShowFirstName = true;
+var isShowLastName = true;
+var isShowAbout = true;
+var isShowEyeColor = true;
+//Выводим по 10 пользователей
+var dataOfPageFilter = function () {
+    dataOfPage = mainData.filter(function (e, i) { return i >= minCount && i < maxCount; });
+};
+//добавляем пользователей в таблицу
 function createTable(tbody, array) {
-  tbody.innerHTML = "";
-
-  array.forEach((item) => {
-    let tr = document.createElement("tr");
-    let tdFirstName = document.createElement("td");
-    let tdLastName = document.createElement("td");
-    let tdAbout = document.createElement("td");
-    let tdEyeColor = document.createElement("td");
-
-    tdFirstName.className = `${item.id} tdFirstName`;
-    tdLastName.className = item.id;
-    tdAbout.className = `${item.id} tdAbout`;
-    tdEyeColor.className = item.id;
-
-    tdFirstName.innerText = item.name.firstName;
-    tdLastName.innerText = item.name.lastName;
-    tdAbout.innerText = item.about;
-    tdEyeColor.innerText = item.eyeColor;
-
-    tr.appendChild(tdFirstName);
-    tr.appendChild(tdLastName);
-    tr.appendChild(tdAbout);
-    tr.appendChild(tdEyeColor);
-    tbody.appendChild(tr);
-
-    tdFirstName.addEventListener("dblclick", (e) =>
-      editFieldHandler(e, "firstName")
-    );
-    tdLastName.addEventListener("dblclick", (e) =>
-      editFieldHandler(e, "lastName")
-    );
-    tdAbout.addEventListener("dblclick", (e) => editFieldHandler(e, "about"));
-    tdEyeColor.addEventListener("dblclick", (e) =>
-      editFieldHandler(e, "eyeColor")
-    );
-  });
+    tbody.innerHTML = "";
+    array.forEach(function (item) {
+        var tr = document.createElement("tr");
+        var tdFirstName = document.createElement("td");
+        var tdLastName = document.createElement("td");
+        var tdAbout = document.createElement("td");
+        var tdEyeColor = document.createElement("td");
+        tdFirstName.className = "".concat(item.id, " tdFirstName");
+        tdLastName.className = "".concat(item.id, " tdLastName");
+        tdAbout.className = "".concat(item.id, " tdAbout");
+        tdEyeColor.className = "".concat(item.id, " tdEyeColor");
+        tdFirstName.innerText = item.name.firstName;
+        tdLastName.innerText = item.name.lastName;
+        tdAbout.innerText = item.about;
+        tdEyeColor.innerText = item.eyeColor;
+        tr.appendChild(tdFirstName);
+        tr.appendChild(tdLastName);
+        tr.appendChild(tdAbout);
+        tr.appendChild(tdEyeColor);
+        tbody.appendChild(tr);
+        tdFirstName.addEventListener("dblclick", function (e) {
+            return editFieldHandler(e, "firstName");
+        });
+        tdLastName.addEventListener("dblclick", function (e) {
+            return editFieldHandler(e, "lastName");
+        });
+        tdAbout.addEventListener("dblclick", function (e) {
+            return editFieldHandler(e, "about");
+        });
+        tdEyeColor.addEventListener("dblclick", function (e) {
+            return editFieldHandler(e, "eyeColor");
+        });
+    });
 }
-
 //скрытие колонки
 function showColumn(columnName) {
-  const tdFirstName = document.body.getElementsByClassName("tdFirstName");
-  switch (columnName) {
-    case "firstName":
-      for (let i = 0; i < tdFirstName.length; i++)
-        tdFirstName[i].style.visibility = "hidden";
-  }
+    var tdFirstName = document.body.getElementsByClassName("tdFirstName");
+    var tdLastName = document.body.getElementsByClassName("tdLastName");
+    var tdAbout = document.body.getElementsByClassName("tdAbout");
+    var tdEyeColor = document.body.getElementsByClassName("tdEyeColor");
+    var activeColumn;
+    var isShowColumn = true;
+    if (columnName === "firstName") {
+        activeColumn = tdFirstName;
+        isShowFirstName = !isShowFirstName;
+        isShowColumn = isShowFirstName;
+    }
+    else if (columnName === "lastName") {
+        activeColumn = tdLastName;
+        isShowLastName = !isShowLastName;
+        isShowColumn = isShowLastName;
+    }
+    else if (columnName === "about") {
+        activeColumn = tdAbout;
+        isShowAbout = !isShowAbout;
+        isShowColumn = isShowAbout;
+    }
+    else {
+        activeColumn = tdEyeColor;
+        isShowEyeColor = !isShowEyeColor;
+        isShowColumn = isShowEyeColor;
+    }
+    if (!isShowColumn) {
+        for (var i = 0; i < activeColumn.length; i++)
+            activeColumn[i].style.visibility = "hidden";
+    }
+    else {
+        for (var i = 0; i < activeColumn.length; i++)
+            activeColumn[i].style.visibility = "visible";
+    }
 }
-
 //фильтр глаз
-
 function filterEyes() {
-  const pageBtn = document.body.getElementsByClassName("pageBtn");
-  const countPage = pageBtn.length;
-  page = 1;
-
-  switch (this.value) {
-    case "blue":
-      mainData = data.filter((e) => e.eyeColor === this.value);
-      break;
-    case "red":
-      mainData = data.filter((e) => e.eyeColor === this.value);
-      break;
-    case "green":
-      mainData = data.filter((e) => e.eyeColor === this.value);
-      break;
-    case "brown":
-      mainData = data.filter((e) => e.eyeColor === this.value);
-      break;
-    default:
-      mainData = [...data];
-  }
-
-  for (let i = 0; i < countPage; i++) {
-    pageBtn[0].remove();
-  }
-  totalPages = Math.ceil(mainData.length / 10);
-  changePageHandler(page);
-  createPagination();
+    var _this = this;
+    var pageBtn = document.body.getElementsByClassName("pageBtn");
+    var countPage = pageBtn.length;
+    page = 1;
+    switch (this.value) {
+        case "blue":
+            mainData = data.filter(function (e) { return e.eyeColor === _this.value; });
+            break;
+        case "red":
+            mainData = data.filter(function (e) { return e.eyeColor === _this.value; });
+            break;
+        case "green":
+            mainData = data.filter(function (e) { return e.eyeColor === _this.value; });
+            break;
+        case "brown":
+            mainData = data.filter(function (e) { return e.eyeColor === _this.value; });
+            break;
+        default:
+            mainData = __spreadArray([], data, true);
+    }
+    for (var i = 0; i < countPage; i++) {
+        pageBtn[0].remove();
+    }
+    totalPages = Math.ceil(mainData.length / 10);
+    changePageHandler(page);
+    createPagination();
 }
-
 //редактирование поля
 function editFieldHandler(e, column) {
-  let id;
-  let mainTeg;
-  if (column === "about") {
-    id = e.target.className.split(" ")[0];
-    mainTeg = `<textarea class='inputEdit' rows='5' cols='40'>${e.target.innerText}</textarea>`;
-  } else if (column === "eyeColor") {
-    id = e.target.className;
-    mainTeg = `<select class='inputEdit'>
-      <option value='blue'>blue</option>
-      <option value='green'>green</option>
-      <option value='brown'>brown</option>
-      <option value='red'>red</option>
-    </select>`;
-  } else {
-    id = e.target.className;
-    mainTeg = `<input type='text' value=${e.target.innerText} class='inputEdit' />`;
-  }
-
-  let editTable = document.createElement("div");
-  editTable.className = "editTable";
-  editTable.innerHTML = `<div><div>Edit the field</div>${mainTeg}<button class='btnSave'>Save</button</div>`;
-  tableWrapper[0].appendChild(editTable);
-
-  saveEditField(id, column);
-}
-
-function saveEditField(id, column) {
-  const editTable = document.body.getElementsByClassName("editTable");
-  const btnSave = document.body.getElementsByClassName("btnSave");
-  btnSave[0].onclick = function () {
-    const inputEdit = document.body.getElementsByClassName("inputEdit");
-
-    switch (column) {
-      case "firstName":
-        mainData = mainData.map((e) =>
-          e.id === id
-            ? (e = { ...e, name: { ...e.name, firstName: inputEdit[0].value } })
-            : { ...e }
-        );
-        break;
-      case "lastName":
-        mainData = mainData.map((e) =>
-          e.id === id
-            ? (e = { ...e, name: { ...e.name, lastName: inputEdit[0].value } })
-            : { ...e }
-        );
-        break;
-      case "about":
-        mainData = mainData.map((e) =>
-          e.id === id ? (e = { ...e, about: inputEdit[0].value }) : { ...e }
-        );
-        break;
-      case "eyeColor":
-        mainData = mainData.map((e) =>
-          e.id === id
-            ? (e = {
-                ...e,
-                eyeColor:
-                  inputEdit[0].options[inputEdit[0].selectedIndex].value,
-              })
-            : { ...e }
-        );
-        break;
+    var id;
+    var mainTeg;
+    if (column === "about") {
+        id = e.target.className.split(" ")[0];
+        mainTeg = "<textarea class='inputEdit' rows='5' cols='40'>".concat(e.target.innerText, "</textarea>");
     }
-
-    changePageHandler(page);
-    editTable[0].remove();
-  };
+    else if (column === "eyeColor") {
+        id = e.target.className;
+        mainTeg = "<select class='inputEdit'>\n      <option value='blue'>blue</option>\n      <option value='green'>green</option>\n      <option value='brown'>brown</option>\n      <option value='red'>red</option>\n    </select>";
+    }
+    else {
+        id = e.target.className;
+        mainTeg = "<input type='text' value=".concat(e.target.innerText, " class='inputEdit' />");
+    }
+    var editTable = document.createElement("div");
+    editTable.className = "editTable";
+    editTable.innerHTML = "<div><div>Edit the field</div>".concat(mainTeg, "<button class='btnSave'>Save</button</div>");
+    tableWrapper[0].appendChild(editTable);
+    saveEditField(id, column);
 }
-
+function saveEditField(id, column) {
+    var editTable = document.body.getElementsByClassName("editTable");
+    var btnSave = document.body.getElementsByClassName("btnSave");
+    btnSave[0].onclick = function () {
+        var inputEdit = document.body.getElementsByClassName("inputEdit");
+        switch (column) {
+            case "firstName":
+                mainData = mainData.map(function (e) {
+                    return e.id === id
+                        ? (e = __assign(__assign({}, e), { name: __assign(__assign({}, e.name), { firstName: inputEdit[0].value }) }))
+                        : __assign({}, e);
+                });
+                break;
+            case "lastName":
+                mainData = mainData.map(function (e) {
+                    return e.id === id
+                        ? (e = __assign(__assign({}, e), { name: __assign(__assign({}, e.name), { lastName: inputEdit[0].value }) }))
+                        : __assign({}, e);
+                });
+                break;
+            case "about":
+                mainData = mainData.map(function (e) {
+                    return e.id === id ? (e = __assign(__assign({}, e), { about: inputEdit[0].value })) : __assign({}, e);
+                });
+                break;
+            case "eyeColor":
+                mainData = mainData.map(function (e) {
+                    return e.id === id
+                        ? (e = __assign(__assign({}, e), { eyeColor: inputEdit[0].options[inputEdit[0].selectedIndex].value }))
+                        : __assign({}, e);
+                });
+                break;
+        }
+        changePageHandler(page);
+        editTable[0].remove();
+    };
+}
 // переключаем страницы
-const changePageHandler = (p) => {
-  page = p;
-  minCount = p === 1 ? 0 : (p - 1) * 10;
-  maxCount = p * 10;
-
-  dataOfPageFilter();
-  createTable(tbody[0], dataOfPage);
+var changePageHandler = function (p) {
+    page = p;
+    minCount = p === 1 ? 0 : (p - 1) * 10;
+    maxCount = p * 10;
+    dataOfPageFilter();
+    createTable(tbody[0], dataOfPage);
 };
-
 // создаем пагинацию и добавляем event
 function createPagination() {
-  for (let i = 1; i <= totalPages; i++) {
-    let pageDiv = document.createElement("div");
-
-    pageDiv.addEventListener("click", () => changePageHandler(i));
-    pageDiv.className = "pageBtn";
-    pageDiv.innerHTML = i;
-    pagesContainer[0].appendChild(pageDiv);
-  }
+    var _loop_1 = function (i) {
+        var pageDiv = document.createElement("div");
+        pageDiv.addEventListener("click", function () { return changePageHandler(i); });
+        pageDiv.className = "pageBtn";
+        pageDiv.innerHTML = "" + i;
+        pagesContainer[0].appendChild(pageDiv);
+    };
+    for (var i = 1; i <= totalPages; i++) {
+        _loop_1(i);
+    }
 }
-
 //сортировка столбцов
-const sortFirstName = () => {
-  mainData.sort((a, b) => {
-    if (a.name.firstName > b.name.firstName) {
-      return 1;
-    } else if (a.name.firstName < b.name.firstName) {
-      return -1;
-    } else return 0;
-  });
-  changePageHandler(page);
+var sortFirstName = function () {
+    mainData.sort(function (a, b) {
+        if (a.name.firstName > b.name.firstName) {
+            return 1;
+        }
+        else if (a.name.firstName < b.name.firstName) {
+            return -1;
+        }
+        else
+            return 0;
+    });
+    changePageHandler(page);
 };
-const sortLastName = () => {
-  mainData.sort((a, b) => {
-    if (a.name.lastName > b.name.lastName) {
-      return 1;
-    } else if (a.name.lastName < b.name.lastName) {
-      return -1;
-    } else return 0;
-  });
-  changePageHandler(page);
+var sortLastName = function () {
+    mainData.sort(function (a, b) {
+        if (a.name.lastName > b.name.lastName) {
+            return 1;
+        }
+        else if (a.name.lastName < b.name.lastName) {
+            return -1;
+        }
+        else
+            return 0;
+    });
+    changePageHandler(page);
 };
-const sortAbout = () => {
-  mainData.sort((a, b) => {
-    if (a.about > b.about) {
-      return 1;
-    } else if (a.about < b.about) {
-      return -1;
-    } else return 0;
-  });
-  changePageHandler(page);
+var sortAbout = function () {
+    mainData.sort(function (a, b) {
+        if (a.about > b.about) {
+            return 1;
+        }
+        else if (a.about < b.about) {
+            return -1;
+        }
+        else
+            return 0;
+    });
+    changePageHandler(page);
 };
-const sortEyeColor = () => {
-  mainData.sort((a, b) => {
-    if (a.eyeColor > b.eyeColor) {
-      return 1;
-    } else if (a.eyeColor < b.eyeColor) {
-      return -1;
-    } else return 0;
-  });
-  changePageHandler(page);
+var sortEyeColor = function () {
+    mainData.sort(function (a, b) {
+        if (a.eyeColor > b.eyeColor) {
+            return 1;
+        }
+        else if (a.eyeColor < b.eyeColor) {
+            return -1;
+        }
+        else
+            return 0;
+    });
+    changePageHandler(page);
 };
-
 dataOfPageFilter();
 createTable(tbody[0], dataOfPage);
 createPagination();
@@ -246,4 +289,7 @@ firstName[0].addEventListener("click", sortFirstName);
 lastName[0].addEventListener("click", sortLastName);
 about[0].addEventListener("click", sortAbout);
 eyeColor[0].addEventListener("click", sortEyeColor);
-visibleFirstName[0].addEventListener("click", () => showColumn("firstName"));
+visibleFirstName[0].addEventListener("click", function () { return showColumn("firstName"); });
+visibleLastName[0].addEventListener("click", function () { return showColumn("lastName"); });
+visibleAbout[0].addEventListener("click", function () { return showColumn("about"); });
+visibleEyeColor[0].addEventListener("click", function () { return showColumn("eyeColor"); });
