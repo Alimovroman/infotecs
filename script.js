@@ -1,4 +1,3 @@
-// import * as data from "./data.json";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -120,23 +119,23 @@ function showColumn(columnName) {
     }
 }
 //фильтр глаз
-function filterEyes() {
-    var _this = this;
+function filterEyes(e) {
     var pageBtn = document.body.getElementsByClassName("pageBtn");
     var countPage = pageBtn.length;
+    var eyeColor = e.target.value;
     page = 1;
-    switch (this.value) {
+    switch (e.target.value) {
         case "blue":
-            mainData = data.filter(function (e) { return e.eyeColor === _this.value; });
+            mainData = data.filter(function (e) { return e.eyeColor === eyeColor; });
             break;
         case "red":
-            mainData = data.filter(function (e) { return e.eyeColor === _this.value; });
+            mainData = data.filter(function (e) { return e.eyeColor === eyeColor; });
             break;
         case "green":
-            mainData = data.filter(function (e) { return e.eyeColor === _this.value; });
+            mainData = data.filter(function (e) { return e.eyeColor === eyeColor; });
             break;
         case "brown":
-            mainData = data.filter(function (e) { return e.eyeColor === _this.value; });
+            mainData = data.filter(function (e) { return e.eyeColor === eyeColor; });
             break;
         default:
             mainData = __spreadArray([], data, true);
@@ -152,16 +151,18 @@ function filterEyes() {
 function editFieldHandler(e, column) {
     var id;
     var mainTeg;
+    if (!e.target)
+        return;
     if (column === "about") {
         id = e.target.className.split(" ")[0];
         mainTeg = "<textarea class='inputEdit' rows='5' cols='40'>".concat(e.target.innerText, "</textarea>");
     }
     else if (column === "eyeColor") {
-        id = e.target.className;
+        id = e.target.className.split(" ")[0];
         mainTeg = "<select class='inputEdit'>\n      <option value='blue'>blue</option>\n      <option value='green'>green</option>\n      <option value='brown'>brown</option>\n      <option value='red'>red</option>\n    </select>";
     }
     else {
-        id = e.target.className;
+        id = e.target.className.split(" ")[0];
         mainTeg = "<input type='text' value=".concat(e.target.innerText, " class='inputEdit' />");
     }
     var editTable = document.createElement("div");
@@ -192,7 +193,9 @@ function saveEditField(id, column) {
                 break;
             case "about":
                 mainData = mainData.map(function (e) {
-                    return e.id === id ? (e = __assign(__assign({}, e), { about: inputEdit[0].value })) : __assign({}, e);
+                    return e.id === id
+                        ? (e = __assign(__assign({}, e), { about: inputEdit[0].value }))
+                        : __assign({}, e);
                 });
                 break;
             case "eyeColor":
@@ -284,7 +287,7 @@ var sortEyeColor = function () {
 dataOfPageFilter();
 createTable(tbody[0], dataOfPage);
 createPagination();
-eyeColorSelect[0].addEventListener("change", filterEyes);
+eyeColorSelect[0].addEventListener("change", function (e) { return filterEyes(e); });
 firstName[0].addEventListener("click", sortFirstName);
 lastName[0].addEventListener("click", sortLastName);
 about[0].addEventListener("click", sortAbout);

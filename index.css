@@ -6,13 +6,23 @@
   margin-top: 60px;
 }
 .tableWrapper {
+  width: 50%;
   display: flex;
-  justify-content: center;
   align-items: center;
+}
+.table {
+  width: 100%;
 }
 .headerTable {
   font-size: 22px;
   text-align: left;
+}
+.eyeOption {
+  display: flex;
+  align-items: center;
+}
+.eyeColorSelect {
+  margin-left: 10px;
 }
 .tbody {
   font-size: 18px;

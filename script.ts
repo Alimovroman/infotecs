@@ -1,5 +1,3 @@
-// import * as data from "./data.json";
-
 const tbody = document.body.getElementsByClassName("tbody");
 const pagesContainer = document.body.getElementsByClassName("pagesContainer");
 const firstName = document.body.getElementsByClassName("firstName");
@@ -14,7 +12,7 @@ const visibleLastName = document.body.getElementsByClassName("visibleLastName");
 const visibleAbout = document.body.getElementsByClassName("visibleAbout");
 const visibleEyeColor = document.body.getElementsByClassName("visibleEyeColor");
 
-let data: Data[] = require("./data.json");
+const data: Data[] = require("./data.json");
 let mainData: Data[] = [...data];
 let totalPages = Math.floor(mainData.length / 10);
 let page = 1;
@@ -110,23 +108,24 @@ function showColumn(columnName: ColumnName) {
 }
 
 //фильтр глаз
-function filterEyes(this: any) {
+function filterEyes(e: Event) {
   const pageBtn = document.body.getElementsByClassName("pageBtn");
   const countPage = pageBtn.length;
+  const eyeColor = (e.target as HTMLSelectElement).value as ColorsEye;
   page = 1;
 
-  switch (this.value) {
+  switch ((e.target as HTMLSelectElement).value) {
     case "blue":
-      mainData = data.filter((e: any) => e.eyeColor === this.value);
+      mainData = data.filter((e) => e.eyeColor === eyeColor);
       break;
     case "red":
-      mainData = data.filter((e: any) => e.eyeColor === this.value);
+      mainData = data.filter((e) => e.eyeColor === eyeColor);
       break;
     case "green":
-      mainData = data.filter((e: any) => e.eyeColor === this.value);
+      mainData = data.filter((e) => e.eyeColor === eyeColor);
       break;
     case "brown":
-      mainData = data.filter((e: any) => e.eyeColor === this.value);
+      mainData = data.filter((e) => e.eyeColor === eyeColor);
       break;
     default:
       mainData = [...data];
@@ -141,14 +140,18 @@ function filterEyes(this: any) {
 }
 
 //редактирование поля
-function editFieldHandler(e: any, column: ColumnName) {
+function editFieldHandler(e: MouseEvent, column: ColumnName) {
   let id: string;
   let mainTeg: string;
+  if (!e.target) return;
+
   if (column === "about") {
-    id = e.target.className.split(" ")[0];
-    mainTeg = `<textarea class='inputEdit' rows='5' cols='40'>${e.target.innerText}</textarea>`;
+    id = (e.target as HTMLTableCellElement).className.split(" ")[0];
+    mainTeg = `<textarea class='inputEdit' rows='5' cols='40'>${
+      (e.target as HTMLTableCellElement).innerText
+    }</textarea>`;
   } else if (column === "eyeColor") {
-    id = e.target.className;
+    id = (e.target as HTMLTableCellElement).className.split(" ")[0];
     mainTeg = `<select class='inputEdit'>
       <option value='blue'>blue</option>
       <option value='green'>green</option>
@@ -156,8 +159,10 @@ function editFieldHandler(e: any, column: ColumnName) {
       <option value='red'>red</option>
     </select>`;
   } else {
-    id = e.target.className;
-    mainTeg = `<input type='text' value=${e.target.innerText} class='inputEdit' />`;
+    id = (e.target as HTMLTableCellElement).className.split(" ")[0];
+    mainTeg = `<input type='text' value=${
+      (e.target as HTMLTableCellElement).innerText
+    } class='inputEdit' />`;
   }
 
   let editTable = document.createElement("div");
@@ -172,26 +177,40 @@ function saveEditField(id: string, column: ColumnName) {
   const editTable = document.body.getElementsByClassName("editTable");
   const btnSave = document.body.getElementsByClassName("btnSave");
   (btnSave[0] as HTMLElement).onclick = function () {
-    const inputEdit: any = document.body.getElementsByClassName("inputEdit");
+    const inputEdit = document.body.getElementsByClassName("inputEdit");
 
     switch (column) {
       case "firstName":
         mainData = mainData.map((e) =>
           e.id === id
-            ? (e = { ...e, name: { ...e.name, firstName: inputEdit[0].value } })
+            ? (e = {
+                ...e,
+                name: {
+                  ...e.name,
+                  firstName: (inputEdit[0] as HTMLInputElement).value,
+                },
+              })
             : { ...e }
         );
         break;
       case "lastName":
         mainData = mainData.map((e) =>
           e.id === id
-            ? (e = { ...e, name: { ...e.name, lastName: inputEdit[0].value } })
+            ? (e = {
+                ...e,
+                name: {
+                  ...e.name,
+                  lastName: (inputEdit[0] as HTMLInputElement).value,
+                },
+              })
             : { ...e }
         );
         break;
       case "about":
         mainData = mainData.map((e) =>
-          e.id === id ? (e = { ...e, about: inputEdit[0].value }) : { ...e }
+          e.id === id
+            ? (e = { ...e, about: (inputEdit[0] as HTMLTextAreaElement).value })
+            : { ...e }
         );
         break;
       case "eyeColor":
@@ -199,8 +218,9 @@ function saveEditField(id: string, column: ColumnName) {
           e.id === id
             ? (e = {
                 ...e,
-                eyeColor:
-                  inputEdit[0].options[inputEdit[0].selectedIndex].value,
+                eyeColor: (inputEdit[0] as HTMLSelectElement).options[
+                  (inputEdit[0] as HTMLSelectElement).selectedIndex
+                ].value,
               })
             : { ...e }
         );
@@ -279,7 +299,7 @@ const sortEyeColor = () => {
 dataOfPageFilter();
 createTable(tbody[0], dataOfPage);
 createPagination();
-eyeColorSelect[0].addEventListener("change", filterEyes);
+eyeColorSelect[0].addEventListener("change", (e) => filterEyes(e));
 firstName[0].addEventListener("click", sortFirstName);
 lastName[0].addEventListener("click", sortLastName);
 about[0].addEventListener("click", sortAbout);
